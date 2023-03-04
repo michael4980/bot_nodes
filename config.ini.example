@@ -1,0 +1,10 @@
+[bot]
+token = 
+
+[nodes]
+node_ips = ip_1
+    ip_2
+passwords = pas1
+    pas2
+api_urls = api_1
+    api_2
