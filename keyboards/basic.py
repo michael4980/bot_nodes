@@ -5,6 +5,8 @@ from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
 def make_start_keyboard():
     start_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     start_keyboard.add(KeyboardButton(text="👀 My nodes"))
+    start_keyboard.add(KeyboardButton(text="TEST"))
+    
     return start_keyboard
 
 

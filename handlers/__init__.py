@@ -6,6 +6,7 @@ from aiogram.dispatcher.filters import Regexp, RegexpCommandsFilter, Text
 import handlers.callbacks.issues as issues_callbacks
 
 import handlers.messages.issues as issues
+import handlers.messages.text_test as text
 from handlers.callbacks.issues import cancel_issue
 
 
@@ -37,6 +38,10 @@ def setup(dp: Dispatcher):
     # view all my orders
     dp.register_message_handler(
         issues.my_nodes, Text(equals='👀 My nodes', ignore_case=True),
+        state='*'
+    )
+    dp.register_message_handler(
+        text.text_tester, Text(equals='TEST', ignore_case=True),
         state='*'
     )
   

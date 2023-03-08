@@ -16,10 +16,17 @@ def iterator():
         yield host, pas, api
     
 def clear_info(result):
-    clear_message = f"*Статус ноды:* {result['state']}\
+    if result['state'] == "stopped":
+       clear_message = f"*Статус ноды:* {result['state']}\
                      \n*Adress:* {result['nominatorAddress']}\
-                     \n*Last_work:* {get_time(result['lastActive'])}\
-                     \n\n"                   
+                     \n*Message:* {result['exitMessage']}\
+                     \n*StatusCode:* {result['exitStatus']}\
+                     \n\n"  
+    else: 
+        clear_message = f"*Статус ноды:* {result['state']}\
+                        \n*Adress:* {result['nominatorAddress']}\
+                        \n*Last_work:* {get_time(result['lastActive'])}\
+                        \n\n"                   
     return clear_message  
 
 def get_time(time):
@@ -60,7 +67,7 @@ async def my_nodes(m: Message, state: FSMContext):
 
 async def node_details(m: Message):
     await m.answer(
-        'Пожалуйста, подождите, собираю детали по заявке...',
+        'Please wait, picking up details',
         reply_markup=make_start_keyboard(),
         parse_mode='Markdown'
     )
