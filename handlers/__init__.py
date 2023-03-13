@@ -7,7 +7,7 @@ import handlers.callbacks.issues as issues_callbacks
 
 import handlers.messages.issues as issues
 import handlers.messages.text_test as text
-from handlers.callbacks.issues import cancel_issue
+
 
 
 from handlers.messages.start import start
@@ -18,19 +18,11 @@ def setup(dp: Dispatcher):
     """
     Setup handlers
     """
-    # to cancel anything
-    dp.register_message_handler(
-        cancel_issue,
-        Text(equals='🙅 Отмена', ignore_case=True),
-        state='*'
-    )
-    
-
     # order details by number (regexp)
-    # dp.register_message_handler(
-    #     issues.issue_details,
-    #     RegexpCommandsFilter(regexp_commands=['\\d+'])
-    # )
+    dp.register_message_handler(
+        issues.node_details,
+        Regexp("node[0-9]+")
+    )
     # # single messages
     dp.register_message_handler(start, commands=["start"])
     
@@ -40,26 +32,29 @@ def setup(dp: Dispatcher):
         issues.my_nodes, Text(equals='👀 My nodes', ignore_case=True),
         state='*'
     )
-    dp.register_message_handler(
-        text.text_tester, Text(equals='TEST', ignore_case=True),
-        state='*'
-    )
-  
+    
     # HAS TO BE THE LAST MESSAGE HANDLER
     dp.register_message_handler(
         unknown, state='*'
     )
 
     # callbacks
-    # dp.register_callback_query_handler(
-    #     answer_to_lement,
-    #     Regexp('answer_lement_\\d+'),
-    #     state='*'
-    # )
-    # rate issue
-    # dp.register_callback_query_handler(
-    #     issues_callbacks.rate_issue,
-    #     Regexp('rate_issue_.+'),
-    #     state='*'
-    # )
+    dp.register_callback_query_handler(
+        issues_callbacks.start_node,
+        Regexp('start_node[0-9]+'),
+        state='*'
+    )
+    
+    dp.register_callback_query_handler(
+        issues_callbacks.stop_node,
+        Regexp('stop_node[0-9]+'),
+        state='*'
+    )
+     
+    dp.register_callback_query_handler(
+        issues_callbacks.cancel_process,
+        Regexp('cancel_process_node[0-9]+'),
+        state='*'
+    )
+    
     logging.info('setup done')

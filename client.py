@@ -1,6 +1,4 @@
-import aiohttp, asyncio
-import logging
-
+import aiohttp
 
 
 class Connect_session:
@@ -22,14 +20,13 @@ class Connect_session:
     
     @classmethod
     async def restart_node(cls, url, session, token):
-        # url = "https://185.244.183.25:8080/api/node/restart"
-        async with session.get(url=url, headers = {"X-Api-Token":f"{token}"}, ssl= False) as resp:
+        async with session.post(url=url, headers = {"X-Api-Token":f"{token}"}, ssl= False) as resp:
             response = await resp.json()
-            return response["status"]
+            return response
     
+    @classmethod
+    async def stop_node(cls, url, session, token):
+        async with session.post(url=url, headers = {"X-Api-Token":f"{token}"}, ssl= False) as resp:
+            response = await resp.json()
+            return response
     
-
-
-if __name__ == "__main__":
-    logging.warning(f"Start main")
-    print(asyncio.run(Connect_session.connect(func = Connect_session.get_data)))

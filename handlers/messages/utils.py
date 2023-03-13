@@ -7,31 +7,51 @@ config = load_config(r"config.ini")
 hosts = config.nodes.node_ips.split('\n')
 pasws = config.nodes.passwords.split('\n')
 apis = config.nodes.api_urls.split('\n')
+nums = config.nodes.nums.split('\n')
 
-class Connection:
+class Node:
     
     @classmethod
     async def main(cls):
-        res = await asyncio.gather(*(cls.connect(cls, host, pas, api) for host, pas, api in cls.iterator(cls)))
+        res = await asyncio.gather(*(cls.connect(host, pas, api, num, cls.clear_info) for host, pas, api, num in cls.iterator(cls)))
         return ''.join(str(i) for i in res)
     
-    async def connect(cls, host, pas, api):
+    @classmethod
+    async def connect(cls, host, pas, api, num, func):
         result = await Connect_session.connect(url=host, pas=pas, api=api, func = Connect_session.get_data)
-        return cls.clear_info(cls, result)
+        return func(result, num)
+    
+    @classmethod
+    async def connect_detail(cls, host, pas, api):
+        result = await Connect_session.connect(url=host, pas=pas, api=api, func = Connect_session.get_data)
+        return result
+    
+    @classmethod
+    async def start_node(cls, host, pas, api):
+        result = await Connect_session.connect(url=host, pas=pas, api=api, func = Connect_session.restart_node)
+        return result
+    
+    @classmethod
+    async def stop_node(cls, host, pas, api):
+        result = await Connect_session.connect(url=host, pas=pas, api=api, func = Connect_session.stop_node)
+        return result
     
     def iterator(cls):
-        for host, pas, api in zip(hosts, pasws, apis):
-            yield host, pas, api
-        
-    def clear_info(cls, result):
+        for host, pas, api, num in zip(hosts, pasws, apis, nums):
+            yield host, pas, api, num
+    
+    @classmethod  
+    def clear_info(cls, result, num):
         if result['state'] == "stopped":
-            clear_message = f"*Статус ноды:* {result['state']}\
+            clear_message = f"*Number node:* /{num}\
+                            \n\n*Статус ноды:* {result['state']}\
                             \n*Adress:* {result['nominatorAddress']}\
                             \n*Message:* {result['exitMessage']}\
                             \n*StatusCode:* {result['exitStatus']}\
                             \n\n"  
         else: 
-            clear_message = f"*Статус ноды:* {result['state']}\
+            clear_message = f"*Number node:* /{num}\
+                            \n\n*Статус ноды:* {result['state']}\
                             \n*Adress:* {result['nominatorAddress']}\
                             \n*Last_work:* {result['lastActive']}\
                             \n*Rewards:* {cls.rounder(cls, result['currentRewards'])}\
@@ -50,3 +70,18 @@ class Connection:
             return result
         except ValueError:
             return 'no earns yet'
+    
+    @classmethod
+    def clear_details_info(cls, result, num):
+        if result['state'] == "stopped":
+            clear_message = f"*Number node:* /{num}\
+                            \n\n*Статус ноды:* {result['state']}\
+                            \n*Message:* {result['exitMessage']}\
+                            \n*StatusCode:* {result['exitStatus']}\
+                            \n\n"  
+        else: 
+            clear_message = f"*Number node:* /{num}\
+                            \n\n*Статус ноды:* {result['state']}\
+                            \n*IP:* {result['nodeInfo']['externalIp']}\
+                            \n\n"                   
+        return clear_message

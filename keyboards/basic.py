@@ -5,22 +5,31 @@ from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
 def make_start_keyboard():
     start_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
     start_keyboard.add(KeyboardButton(text="👀 My nodes"))
-    start_keyboard.add(KeyboardButton(text="TEST"))
-    
     return start_keyboard
 
 
 
-def add_issue_buttons(issue_id):
-    edit_issue_button = InlineKeyboardButton(
-        'Restart node', callback_data=f'edit_{issue_id}'
+def start_node_button(node_num):
+    start_button = InlineKeyboardButton(
+        'Start node', callback_data=f'start_{node_num}'
     )
-    cancel_issue_button = InlineKeyboardButton(
-        'Cancel', callback_data=f'cancel_{issue_id}'
+    cancel_button = InlineKeyboardButton(
+        '🙅 Cancel', callback_data=f'cancel_process_{node_num}'
     )
-    issue_inline_kb = InlineKeyboardMarkup().add(edit_issue_button)
-    issue_inline_kb.add(cancel_issue_button)
-    return issue_inline_kb
+    node_inline = InlineKeyboardMarkup().add(start_button)
+    node_inline.add(cancel_button)
+    return node_inline
+
+def stop_node_button(node_num):
+    stop_button = InlineKeyboardButton(
+        'Stop node', callback_data=f'stop_{node_num}'
+    )
+    cancel_button = InlineKeyboardButton(
+        '🙅 Cancel', callback_data=f'cancel_process_{node_num}'
+    )
+    node_inline = InlineKeyboardMarkup().add(stop_button)
+    node_inline.add(cancel_button)
+    return node_inline
 
 def add_cancel_button():
     start_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)

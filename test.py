@@ -1,13 +1,10 @@
-stroka = "_dsflsfs_ddffd_d*dld**"
 
-def render(text):
-    marks = ["`", "[", "*", "_", "___"]
-    for i in text:
-        if i in marks:
-            print("yes")
-            text = text.replace(i, '')
-    return text
+from data import load_config
+from configparser import ConfigParser
 
-print(render(stroka))
-
+config = ConfigParser()
+config.read('config.ini')
+a = 'node1'
+mas = ['ip', 'password']
+print(config.get(a, vars = mas))
     
