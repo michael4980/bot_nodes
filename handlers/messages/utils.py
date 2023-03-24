@@ -55,7 +55,7 @@ class Node:
                             \n*Adress:* {result['nominatorAddress']}\
                             \n*Last_work:* {result['lastActive']}\
                             \n*Rewards:* {cls.rounder(cls, result['currentRewards'])}\
-                            \n*IP:* {result['nodeInfo']['externalIp']}\
+                            \n*Time:* {result['totalTimeRunning']}\
                             \n\n"                   
         return clear_message  
 
@@ -82,6 +82,6 @@ class Node:
         else: 
             clear_message = f"*Number node:* /{num}\
                             \n\n*Статус ноды:* {result['state']}\
-                            \n*IP:* {result['nodeInfo']['externalIp']}\
+                            \n*Adress:* {result['nominatorAddress']}\
                             \n\n"                   
         return clear_message
