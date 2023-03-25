@@ -8,3 +8,17 @@ passwords = pas1
     pas2
 api_urls = api_1
     api_2
+
+[node1]
+ip = 
+password = 
+api_status = 
+api_start = 
+api_stop = 
+
+[node2]
+ip = 
+password = 
+api_status = 
+api_start = 
+api_stop = 
